@@ -1,0 +1,451 @@
+<!doctype html>
+<html lang="fi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vasen 4 kuollut – arvaa peli konesuomennoksesta</title>
+<meta name="description" content="Microsoftin suomenkielinen tukisivu konekäänsi Edge Game Assistin pelien nimet. Arvaa, mikä peli on kyseessä.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0E1B33;--surface:#16264A;--deep:#0A1529;--text:#F5F1E6;--soft:#D9DDE8;--muted:#B8C0D4;--dim:#8A94AB;--line:rgba(255,255,255,.12);--accent:#FFC857;--green:#8FE3A1;--red:#FF8A7A}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg)}
+body{color:var(--text);font-family:'IBM Plex Sans','Segoe UI',system-ui,sans-serif;font-size:17px;line-height:1.5;min-height:100vh}
+a{color:var(--accent)}a:hover{color:#FFD98A}
+.wrap{max-width:720px;margin:0 auto;padding:48px 20px 96px;display:flex;flex-direction:column;gap:28px}
+.screen{display:flex;flex-direction:column;gap:28px}
+.mono{font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.mono.accent{color:var(--accent);letter-spacing:.12em}
+.display{font-family:'Bricolage Grotesque','IBM Plex Sans',sans-serif;font-weight:800;letter-spacing:-.02em;line-height:.95}
+h1{margin:0;font-size:clamp(48px,10vw,92px);color:var(--text)}
+.lead{margin:0;font-size:19px;max-width:560px;color:var(--soft)}
+.card{display:flex;flex-direction:column;gap:14px;padding:24px 28px;background:var(--surface);border:1px solid rgba(255,255,255,.08);border-radius:20px}
+.rule{display:flex;gap:14px;align-items:baseline;color:var(--soft)}
+.rule b{flex:0 0 auto;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:22px;color:var(--accent)}
+.fine{margin-top:4px;padding-top:14px;border-top:1px solid rgba(255,255,255,.1);display:flex;flex-direction:column;gap:8px;font-size:15px;color:var(--muted)}
+.fine strong{color:var(--text);font-weight:600}
+.fine .lit{color:var(--text)}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 22px;border-radius:12px;font:inherit;font-size:16px;font-weight:600;cursor:pointer;border:1px solid transparent;transition:transform .08s ease,filter .15s ease,background .15s ease}
+.btn:active{transform:translateY(1px)}
+.btn-primary{background:var(--accent);color:var(--bg)}
+.btn-primary:hover{filter:brightness(1.08)}
+.btn-big{font-size:18px;min-height:56px;padding:0 32px}
+.btn-secondary{background:transparent;color:var(--text);border-color:rgba(255,255,255,.3)}
+.btn-secondary:hover{background:rgba(255,255,255,.08)}
+.btn-small{min-height:44px;padding:0 18px;font-size:15px}
+.btn-ghost{background:none;border:0;padding:8px 0;color:var(--muted);text-decoration:underline;text-underline-offset:3px;cursor:pointer;font:inherit;font-size:15px;min-height:44px}
+.btn-ghost:hover{color:var(--text)}
+.seg{min-height:44px;padding:0 16px;border-radius:999px;border:1px solid rgba(255,255,255,.28);background:transparent;color:var(--text);font:inherit;font-size:15px;font-weight:500;cursor:pointer}
+.seg:hover{background:rgba(255,255,255,.08)}
+.seg.on,.seg.on:hover{background:var(--text);color:var(--bg);border-color:var(--text)}
+.foot{margin:0;font-size:14px;color:var(--dim)}
+.play{display:flex;flex-direction:column;gap:24px}
+.topbar{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.topbar strong{color:var(--accent);font-size:16px;margin-left:4px}
+.bar{height:6px;background:var(--line);border-radius:999px;overflow:hidden}
+.bar div{height:100%;background:var(--accent);border-radius:999px;transition:width .25s ease}
+.title-card{display:flex;flex-direction:column;gap:10px;padding:36px 32px;background:var(--surface);border:1px solid rgba(255,255,255,.08);border-radius:20px}
+.fi{font-size:clamp(32px,6.5vw,54px);line-height:1.05;letter-spacing:-.015em;overflow-wrap:anywhere}
+.form{display:flex;flex-direction:column;gap:10px}
+.form label{font-size:15px;font-weight:600;color:var(--soft)}
+.inputrow{display:flex;gap:10px;flex-wrap:wrap}
+.guess{flex:1 1 260px;min-width:0;min-height:52px;padding:0 16px;font:inherit;font-size:18px;color:var(--text);background:var(--deep);border:1px solid rgba(255,255,255,.22);border-radius:12px}
+.guess::placeholder{color:var(--dim)}
+.guess:focus{border-color:var(--accent)}
+.feedback{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;min-height:24px}
+.msg{font-size:15px;font-weight:500;color:var(--red)}
+.hints{display:flex;flex-direction:column;gap:4px}
+.hints-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding-bottom:10px}
+.hint-list{display:flex;flex-direction:column;border-top:1px solid var(--line)}
+.hint{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding:14px 0;border-bottom:1px solid var(--line);min-height:72px}
+.hint .mono{flex:0 0 128px;letter-spacing:.08em}
+.hint .val{flex:1 1 220px;font-weight:500}
+.hint .lock{flex:1 1 220px;display:flex;align-items:center;gap:8px;font-size:15px;color:var(--dim)}
+.giveup{display:flex;justify-content:flex-end;padding-top:6px}
+.result{display:flex;flex-direction:column;gap:16px;padding:28px 32px;background:var(--deep);border:1px solid var(--c);border-radius:20px}
+.result-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;color:var(--c)}
+.result-head div{font-size:17px;font-weight:600}
+.result-head .mono{color:var(--c);font-size:14px;letter-spacing:.08em}
+.en{font-size:clamp(26px,4.5vw,38px);line-height:1.1;letter-spacing:-.01em}
+.note{font-size:16px;color:var(--soft)}
+.note span{color:var(--dim)}
+.facts{display:flex;flex-wrap:wrap;gap:16px 24px;padding-top:16px;border-top:1px solid rgba(255,255,255,.1)}
+.fact{flex:1 1 200px;display:flex;flex-direction:column;gap:4px;font-size:15px}
+.fact.year{flex:0 1 160px}
+.fact .mono{font-size:12px;color:var(--dim)}
+.score{font-size:clamp(56px,12vw,112px);letter-spacing:-.03em}
+.score span{color:var(--accent)}
+.score small{color:var(--dim);font-size:.5em;font-weight:500}
+.verdict{margin:0;font-size:21px;line-height:1.4;color:var(--soft);max-width:560px}
+.results{display:flex;flex-direction:column;border-top:1px solid var(--line)}
+.res{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;padding:12px 0;border-bottom:1px solid var(--line)}
+.res .names{flex:1 1 240px;min-width:0;display:flex;flex-direction:column;gap:2px}
+.res .names div:first-child{font-weight:600;overflow-wrap:anywhere}
+.res .names div:last-child{font-size:15px;color:var(--muted);overflow-wrap:anywhere}
+.res .mono{flex:0 0 auto;font-size:14px;letter-spacing:.08em}
+.ok{color:var(--green)}.bad{color:var(--red)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+</style>
+</head>
+<body>
+<main class="wrap" id="app"></main>
+<script>
+// [suomennos sivulta, oikea nimi (Microsoftin en-US-listan kirjoitusasu), huomio käännöksestä, ohjaaja, julkaisuvuosi, genre]
+var RAW = [
+["Vasen 4 kuollut 2","Left 4 Dead 2","\"Left\" kääntyi suunnaksi. Jäljelle jääneistä ei puhettakaan.","Ei nimettyä ohjaajaa – Valve (suunnittelija Mike Booth)","2009","Yhteistyö-FPS / selviytymiskauhu"],
+["7 päivää kuolla","7 Days to Die","Melkein oikein, kielioppi jäi matkalle.","Ei nimettyä ohjaajaa – The Fun Pimps","2024 (Early Access vuodesta 2013)","Selviytymiskauhu"],
+["Ruttotarina: Viattomuus","A Plague Tale: Innocence","Tale = tarina, plague = rutto. Sanasta sanaan, hengestä ei mitään.","David Dedeine & Kevin Choteau (Asobo Studio)","2019","Hiiviskely-toimintaseikkailu"],
+["Alien: Eristys","Alien: Isolation","Isolation = eristys. Kuulostaa enemmän lämpöeristykseltä kuin kauhulta.","Alistair Hope (Creative Assembly)","2014","Selviytymiskauhu / hiiviskely"],
+["Keskuudessamme","Among Us","\"Keskuudessamme\" on oikeastaan aika runollinen – petturi on keskuudessamme.","Ei nimettyä ohjaajaa – Innersloth (suunnittelija Marcus Bromander)","2018","Seurapeli / sosiaalinen päättely"],
+["Apex-selitteet","Apex Legends","Legends = selitteet, kuten kartan merkkien selitykset. Legendat jäivät uupumaan.","Steven Ferreira (Respawn Entertainment)","2019","Battle royale -sankariräiskintä"],
+["Salamurhaajan Creed Valhalla","Assassin's Creed Valhalla","Ainoa AC-peli listalla, jonka \"Assassin's\" kääntyi: salamurhaajan. Creed sai jäädä.","Ashraf Ismail & Eric Baptizat (Ubisoft Montreal)","2020","Avoimen maailman toimintaroolipeli"],
+["Atomisydän","Atomic Heart","Suora käännös, ja kuulostaa 70-luvun progelevyltä.","Robert Bagratuni (Mundfish)","2023","Ensimmäisen persoonan räiskintä (FPS)"],
+["Avatar: Pandoran rajat","Avatar: Frontiers of Pandora","Frontiers = rajaseudut, josta tuli pelkät rajat.","Ei nimettyä ohjaajaa – Massive Entertainment (Ubisoft)","2023","Avoimen maailman toimintaseikkailu"],
+["Julkisena","Avowed","Avowed = julkisesti tunnustettu, josta tuli adverbi \"julkisena\".","Carrie Patel (Obsidian Entertainment)","2025","Toimintaroolipeli"],
+["Takaisin 4 Veri","Back 4 Blood","\"Back\" kääntyi paluuksi. Takaisin verelle.","Phil Robb (Turtle Rock Studios)","2021","Yhteistyö-FPS"],
+["Baldurin portti 3","Baldur's Gate 3","Baldurin portti, kuin puutarhan portti. Nimi ei kaivannut käännöstä.","Swen Vincke (Larian Studios)","2023 (Early Access vuodesta 2020)","Roolipeli (CRPG)"],
+["PALLO x PIT","BALL x PIT","Puolet nimestä käännettiin, puolet ei.","Kenny Sun (yhden hengen studio, julkaisija Devolver)","2025","Roguelike-tiilenmurskaus"],
+["Musta myytti: Wukong","Black Myth: Wukong","Oikein käännetty. Harvinaista tällä sivulla.","Feng Ji (Game Science)","2024","Toimintaroolipeli"],
+["Verinen: Yön rituaali","Bloodstained: Ritual of the Night","Bloodstained = veren tahrima, josta tuli pelkkä \"verinen\".","Shutaro Iida – tuottajana Koji Igarashi (ArtPlay)","2019","Toimintaroolipeli / metroidvania"],
+["Sininen prinssi","Blue Prince","Blueprint-sanaleikki katosi. Jäljelle jäi sininen prinssi.","Tonda Ros (Dogubomb)","2025","Pulmaseikkailu / roguelike"],
+["Kaupungit: Skylines 2","Cities: Skylines 2","Vain \"Cities\" käännettiin. Skylines sai jäädä.","Ei nimettyä ohjaajaa – Colossal Order, Tampere","2023","Kaupunginrakennus"],
+["Vastahyökkäys 2","Counter-Strike 2","Vastahyökkäys – terroristien vastainen isku muuttui sotilasoperaatioksi.","Ei nimettyä ohjaajaa – Valve","2023","Taktinen FPS"],
+["Ristiretkeläiset kuninkaat III","Crusader Kings III","Kaksi monikkoa peräkkäin ilman mitään yhteyttä toisiinsa.","Henrik Fåhraeus (Paradox Development Studio)","2020","Suurstrategia / roolipeli"],
+["Karitsan kultti","Cult of the Lamb","Oikein käännetty. Karitsan kultti on jopa hyvä nimi.","Julian Wilton (Massive Monster)","2022","Roguelike / hallintasimulaatio"],
+["Kuppipää","Cuphead","Sanatarkka ja silti aika osuva.","Chad & Jared Moldenhauer (Studio MDHR)","2017","Run and gun -toiminta"],
+["Tummin vankityrmä","Darkest Dungeon","Sanakirjan mukaan oikein, mutta kuka sanoo \"vankityrmä\"?","Chris Bourassa (Red Hook Studios)","2016 (Early Access vuodesta 2015)","Roguelike-roolipeli"],
+["Dave sukeltaja","Dave the Diver","\"The\" katosi matkalla. Dave sukeltaja, kuin Pekka Töpöhäntä.","Jaeho Hwang (Mintrocket / Nexon)","2023 (Early Access vuodesta 2022)","Seikkailu / hallintasimulaatio"],
+["Kuollut päivänvalossa","Dead by Daylight","\"By daylight\" luettiin \"päivänvalossa\". Kuolema ennen aamiaista.","Mathieu Côté, Dave Richard ym. (Behaviour Interactive)","2016","Epäsymmetrinen selviytymiskauhu (moninpeli)"],
+["Kuolleet solut","Dead Cells","Cells = solut, biologian tunnilta. Vankisellit jäivät kääntämättä.","Ei nimettyä ohjaajaa – Motion Twin (suunnittelija Sébastien Bénard)","2018 (Early Access vuodesta 2017)","Roguelike-metroidvania"],
+["Death Stranding 2: Rannalla","Death Stranding 2: On the Beach","On the Beach = rannalla. Siinä kaikki.","Hideo Kojima (Kojima Productions)","2025","Toimintaseikkailu"],
+["Detroit: Ryhdy ihmiseksi","Detroit: Become Human","Oikein käännetty, ja silti kummallinen.","David Cage (Quantic Dream)","2018","Seikkailu / interaktiivinen draama"],
+["Paholainen voi itkeä 5","Devil May Cry 5","May cry = voi itkeä. Paholaiselle annettiin lupa.","Hideaki Itsuno (Capcom)","2019","Hack and slash -toiminta"],
+["Diablo II: Ylösnousemus","Diablo II: Resurrected","Resurrected kääntyi ylösnousemukseksi, pääsiäisen hengessä.","Ei nimettyä ohjaajaa – Blizzard & Vicarious Visions","2021 (alkuperäinen 2000)","Toimintaroolipeli"],
+["Häpäisty","Dishonored","Sanakirjakäännös, joka kuulostaa rikosilmoitukselta.","Raphaël Colantonio & Harvey Smith (Arkane Studios)","2012","Hiiviskely-toimintaseikkailu"],
+["Lähettäminen","Dispatch","Dispatch = lähettäminen, kuten paketin. Hätäkeskus ei tullut mieleen.","Nick Herman, Dennis Lenart & Chris Rebbert (AdHoc Studio)","2025","Tarinavetoinen seikkailu / interaktiivinen elokuva"],
+["Jumalallisuus: Alkuperäinen synti II","Divinity: Original Sin II","Jumalallisuus ja alkuperäinen synti. Teologian luento, ei roolipeli.","Swen Vincke (Larian Studios)","2017 (Early Access vuodesta 2016)","Roolipeli (CRPG)"],
+["Älä näänny nälkään yhdessä","Don't Starve Together","Sanatarkka, ja kuulostaa parisuhdeneuvolta.","Ei nimettyä ohjaajaa – Klei Entertainment","2016 (Early Access vuodesta 2014)","Selviytyminen"],
+["DOOM: Pimeät ajat","DOOM: The Dark Ages","Dark Ages = pimeät ajat. Keskiaika olisi ollut lähempänä.","Hugo Martin (id Software)","2025","Ensimmäisen persoonan räiskintä (FPS)"],
+["Hiekka: Herääminen","Dune: Awakening","Dune = hiekkadyyni, josta tuli pelkkä hiekka. Arrakis itkee.","Joel Bylos & Viljar Sommerbakk (Funcom)","2025","Selviytymis-MMO"],
+["Kääpiölinnoitus","Dwarf Fortress","Oikein käännetty, yhdyssanana.","Tarn & Zach Adams (Bay 12 Games)","2006 (Steam-julkaisu 2022)","Siirtokuntasimulaatio / roguelike"],
+["Kuoleva valo","Dying Light","Suora käännös, melkein kaunis.","Paweł Marchewka & Adrian Ciszewski (Techland)","2015","Selviytymiskauhu / parkour"],
+["Verhottu","Enshrouded","Enshrouded = verhottu. Sanakirja osui, tunnelma ei.","Antony Christoulakis (Keen Games)","2024 (Early Access)","Selviytymis-toimintaroolipeli"],
+["Pako Tarkovista","Escape from Tarkov","Ihan oikein käännetty.","Nikita Buyanov (Battlestate Games)","2025 (betassa vuodesta 2017)","Extraction-räiskintä (FPS)"],
+["Laskeuma 76","Fallout 76","Laskeuma = radioaktiivinen laskeuma. Teknisesti oikein.","Jeff Gardiner & Jonathan Rush (Bethesda Game Studios)","2018","Verkkotoimintaroolipeli"],
+["Kunniaksi","For Honor","Kunniaksi, kuin maljapuheessa. Ei kovin taistelutantereinen.","Federico Russo (Ubisoft Montreal)","2017","Taistelu / toiminta"],
+["Gears of War: Ladattu uudelleen","Gears of War: Reloaded","Reloaded = ladattu uudelleen. Kuin selaimen sivu.","The Coalition – alkuperäisen (2006) suunnitteli Cliff Bleszinski","2025 (alkuperäinen 2006)","Kolmannen persoonan räiskintä"],
+["Genshin-vaikutus","Genshin Impact","Impact = vaikutus. Genshin-vaikutus kuulostaa tutkimushankkeelta.","Ei nimettyä ohjaajaa – tuottaja Cai Haoyu (miHoYo / HoYoverse)","2020","Avoimen maailman toimintaroolipeli (gacha)"],
+["Sodan jumala: Ragnarok","God of War: Ragnarok","Oikein käännetty. Sodan jumala jopa kuulostaa hyvältä.","Eric Williams & Cory Barlog (Santa Monica Studio)","2022","Toimintaseikkailu / hack and slash"],
+["Maadoitettu","Grounded","Grounded = maadoitettu, kuin pistorasia. Takapihan ruohikko ei tullut mieleen.","Adam Brennecke (Obsidian Entertainment)","2022 (Early Access vuodesta 2020)","Selviytyminen"],
+["Killan sodat 2","Guild Wars 2","Killan sodat – yhden killan, kaikkien sijaan.","Ei nimettyä ohjaajaa – ArenaNet","2012","MMORPG"],
+["Rauta IV:n sydämet","Hearts of Iron IV","Sanajärjestys meni sekaisin: Rauta IV:n sydämet.","Dan Lind (Paradox Development Studio)","2016","Suurstrategia"],
+["Ontto ritari","Hollow Knight","Oikein käännetty.","Ari Gibson & William Pellen (Team Cherry)","2017","Metroidvania"],
+["Miamin hotline-linja","Hotline Miami","Hotline-linja: linja kahdesti. Miamin.","Ei nimettyä ohjaajaa – Dennaton Games (Jonatan Söderström & Dennis Wedin)","2012","Ylhäältä kuvattu räiskintä"],
+["Ihmisen kaatumisen tasainen","Human Fall Flat","Kolme sanaa, nolla merkitystä. Konekääntäjän mestariteos.","Tomas Sakalauskas (No Brakes Games)","2016","Fysiikkapohjainen pulmatasoloikka"],
+["Indiana Jones ja suuri ympyrä","Indiana Jones and the Great Circle","Great Circle = isoympyrä, navigoijan termi. Tästä tuli vain suuri ympyrä.","Jerk Gustafsson & Axel Torvenius (MachineGames)","2024","Toimintaseikkailu / hiiviskely"],
+["Vääryys 2","Injustice 2","Sanakirjan mukaan oikein. Kuulostaa kuluttajavalitukselta.","Ed Boon (NetherRealm Studios)","2017","Taistelupeli"],
+["Se vaatii kaksi","It Takes Two","Sanatarkka – ja peli tosiaan vaatii kaksi pelaajaa.","Josef Fares (Hazelight Studios)","2021","Yhteistyö-toimintaseikkailu"],
+["Syy 4","Just Cause 4","Just cause = perusteltu syy. Jäljelle jäi pelkkä syy.","Francesco Antolini (Avalanche Studios)","2018","Avoimen maailman toimintaseikkailu"],
+["Pitäjän","Keeper","Keeper = pitäjä, taivutettuna genetiiviin. Pitäjän – kenen?","Lee Petty (Double Fine Productions)","2025","Seikkailu"],
+["Viimeinen aikakausi","Last Epoch","Oikein käännetty ja mahtipontinen.","Judd Cobler ym. (Eleventh Hour Games)","2024 (Early Access vuodesta 2019)","Toimintaroolipeli"],
+["Tappava yritys","Lethal Company","Company = yritys, firma. Kuulostaa työsuojelutapaukselta.","Zeekerss (yhden hengen studio)","2023 (Early Access)","Yhteistyö-selviytymiskauhu"],
+["P:n valheet","Lies of P","P:n valheet. Pinokkio piilottelee kaksoispisteen takana.","Choi Ji-won (Neowiz / Round8 Studio)","2023","Soulslike-toimintaroolipeli"],
+["Kuin lohikäärme Gaiden: Mies, joka pyyhki nimensä","Like a Dragon Gaiden: The Man Who Erased His Name","Mies, joka pyyhki nimensä – kuin liitutaululta.","Ryosuke Horii (Ryu Ga Gotoku Studio)","2023","Toimintaseikkailu / mätkintä"],
+["Mafia: Vanha maa","Mafia: The Old Country","Old Country = vanha kotimaa. Vanha maa kuulostaa geologialta.","Alex Cox (Hangar 13)","2025","Toimintaseikkailu"],
+["Metal Gear Solid V: Aavekipu","Metal Gear Solid V: The Phantom Pain","Phantom pain = aavekipu. Lääketieteellisesti täysin oikein.","Hideo Kojima (Kojima Productions)","2015","Hiiviskely-toimintaseikkailu"],
+["Nopeuden tarve: Lämpö","Need for Speed: Heat","Heat = poliisin painostus, josta tuli säätila.","Ei nimettyä ohjaajaa – Ghost Games (EA)","2019","Ajopeli"],
+["Ninja Gaiden: Raivo","Ninja Gaiden: Ragebound","Ragebound typistyi raivoksi.","Ei nimettyä ohjaajaa – The Game Kitchen","2025","Toimintatasoloikka"],
+["Kerran ihminen","Once Human","Once = kerran, ei \"joskus\". Kerran ihminen, aina ihminen.","Ei nimettyä ohjaajaa – Starry Studio (NetEase)","2024","Selviytyminen"],
+["Ulommat villit","Outer Wilds","Wilds = villit, monikossa. Ulommat villit, kuin sukunimi.","Alex Beachum (Mobius Digital)","2019","Tutkimusseikkailu"],
+["Ylikypsää! 2","Overcooked! 2","Overcooked = ylikypsä. Vieläpä partitiivissa: ylikypsää!","Ei nimettyä ohjaajaa – Ghost Town Games & Team17","2018","Yhteistyö-kokkaussimulaatio"],
+["Tyynenmeren asema","Pacific Drive","Drive = asema, kuten levyasema. Tyynenmeren asema.","Cassandra Dracott & Seth Rosen (Ironwood Studios)","2024","Selviytyminen / ajaminen"],
+["Paperit, kiitos.","Papers, Please","\"Kiitos\" on kohteliaampi kuin yksikään rajavartija.","Lucas Pope (teki pelin yksin)","2013","Pulmasimulaatio"],
+["Maanpaon polku","Path of Exile","Oikein käännetty.","Ei nimettyä ohjaajaa – Grinding Gear Games (suunnittelijat Chris Wilson & Mark Roberts)","2013","Toimintaroolipeli"],
+["HUIPPU","PEAK","Oikein käännetty, ja isolla.","Ei nimettyä ohjaajaa – Aggro Crab & Landfall","2025","Yhteistyö-kiipeilyseikkailu"],
+["Persona 3 Lataa uudelleen","Persona 3 Reload","Reload = lataa uudelleen. Kuin nettisivu.","Takuya Yamaguchi (Atlus)","2024","JRPG / sosiaalinen simulaatio"],
+["Eternity II:n pilarit: Deadfire","Pillars of Eternity II: Deadfire","Sanajärjestys sekaisin: Eternity II:n pilarit.","Josh Sawyer (Obsidian Entertainment)","2018","Roolipeli (CRPG)"],
+["Portaali 2","Portal 2","Oikein käännetty.","Joshua Weier (Valve)","2011","Pulmatasoloikka"],
+["Saalis","Prey","Prey = saalis. Oikein, mutta kuulostaa metsästyspeliltä.","Raphaël Colantonio (Arkane Austin)","2017","FPS / immersiivinen simulaatio"],
+["PUBG: Taistelualueet","PUBG: Battlegrounds","Taistelualueet, kuin kaavoituksessa.","Brendan Greene & Jang Tae-seok (PUBG Studios)","2017","Battle royale"],
+["Lauttaa","Raft","Partitiivissa, kuin tilaisit sellaista: lauttaa, kiitos.","Ei nimettyä ohjaajaa – Redbeet Interactive","2022 (Early Access vuodesta 2018)","Selviytyminen"],
+["Valmis tai ei","Ready or Not","Oikein käännetty.","Ei nimettyä ohjaajaa – VOID Interactive","2023 (Early Access vuodesta 2021)","Taktinen FPS"],
+["Punainen kuollut lunastus 2","Red Dead Redemption 2","Lunastus, kuten kupongin lunastus. Punainen kuollut.","Ei nimettyä ohjaajaa – Rockstar Games (käsikirjoittaja Dan Houser)","2018","Toimintaseikkailu / lännenpeli"],
+["UUSINTAOTTELUA","REMATCH","Partitiivissa, kuin pyytäisit sellaista. Ja isolla.","Ei nimettyä ohjaajaa – Sloclap","2025","Jalkapallo"],
+["Obra Dinnin palautus","Return of the Obra Dinn","Return = palautus, kuten verkkokaupan palautus.","Lucas Pope (teki pelin yksin)","2018","Pulma / seikkailu"],
+["Sateen riski 2","Risk of Rain 2","Oikein käännetty, kuulostaa sääennusteelta.","Ei nimettyä ohjaajaa – Hopoo Games","2020 (Early Access vuodesta 2019)","Roguelike-räiskintä (kolmas persoona)"],
+["S.T.A.L.K.E.R. 2: Chornobylin sydän","S.T.A.L.K.E.R. 2: Heart of Chornobyl","Oikein käännetty.","Ievgen & Mariia Grygorovych (GSC Game World)","2024","FPS / selviytymiskauhu"],
+["Tyydyttävä","Satisfactory","Tyydyttävä, kuin arvosana todistuksessa.","Ei nimettyä ohjaajaa – Coffee Stain Studios","2024 (Early Access vuodesta 2019)","Tehtaanrakennussimulaatio"],
+["Aikataulu 1","Schedule 1","Schedule I on Yhdysvaltain huumeluokitus. Aikataulu 1 on bussilinja.","TVGS (yhden hengen studio, Tyler)","2025 (Early Access)","Simulaatio"],
+["VAAHTO","SCUM","Scum = pintavaahto. Roskaväki jäi kääntämättä.","Ei nimettyä ohjaajaa – Gamepires","2025 (Early Access vuodesta 2018)","Selviytyminen"],
+["Sekiro: Varjot kuolevat kahdesti","Sekiro: Shadows Die Twice","Oikein käännetty.","Hidetaka Miyazaki & Kazuhiro Hamatani (FromSoftware)","2019","Toimintaseikkailu"],
+["Tomb Raiderin varjo: Lopullinen painos","Shadow of the Tomb Raider: Definitive Edition","Lopullinen painos, kuin kirjasta.","Daniel Chayer-Bisson (Eidos-Montréal)","2018","Toimintaseikkailu"],
+["Sid Meierin sivilisaatio VI","Sid Meier's Civilization VI","Oikein käännetty.","Ed Beach (pääsuunnittelija, Firaxis Games)","2016","Vuoropohjainen 4X-strategia"],
+["Tarkka-ampuja Elite 4","Sniper Elite 4","Puoliksi käännetty: tarkka-ampuja kyllä, Elite ei.","Ei nimettyä ohjaajaa – Rebellion Developments","2017","Taktinen räiskintä / hiiviskely"],
+["Metsän pojat","Sons of the Forest","Oikein käännetty.","Ei nimettyä ohjaajaa – Endnight Games","2024 (Early Access vuodesta 2023)","Selviytymiskauhu"],
+["Keskiyön eteläpuolella","South of Midnight","Suunta oikein, tunnelma ei.","David Sears & Jasmin Roy (Compulsion Games)","2025","Toimintaseikkailu"],
+["Tähtiterä","Stellar Blade","Tähtiterä, kuin ruotsalainen terämerkki.","Kim Hyung-tae (Shift Up)","2024","Toimintaseikkailu / hack and slash"],
+["Subnautica: Nollan alapuolella","Subnautica: Below Zero","Nollan alapuolella – pakkasella siis.","Ei nimettyä ohjaajaa – Unknown Worlds Entertainment","2021 (Early Access vuodesta 2019)","Selviytymisseikkailu"],
+["Muutokset","The Alters","Alters = muutokset. Kloonit katosivat käännöksessä.","Tomasz Kisilewicz (11 bit studios)","2025","Selviytyminen / tukikohdan rakennus"],
+["Isaacin sidonta: uudestisyntyminen","The Binding of Isaac: Rebirth","Sidonta, kuin kirjansidonta. Raamatun uhritarina jäi kääntämättä.","Edmund McMillen (suunnittelija, Nicalis)","2014","Roguelike"],
+["Vanhin vierittää IV: Unohduksen remasteroitu","The Elder Scrolls IV: Oblivion Remastered","\"Elder Scrolls\" luettiin lauseena: vanhin vierittää (ruutua). Unohduksen remasteroitu.","Todd Howard (alkuperäinen, Bethesda) – remasterin teki Virtuos","2025 (alkuperäinen 2006)","Toimintaroolipeli"],
+["Vanhin vierittää online-tilassa","The Elder Scrolls Online","Vanhin vierittää, nyt online-tilassa.","Nick Giacomini (ZeniMax Online Studios)","2014","MMORPG"],
+["Viimeinen meistä: osa II","The Last of Us: Part II","Oikein käännetty.","Neil Druckmann, Anthony Newman & Kurt Margenau (Naughty Dog)","2020","Toimintaseikkailu"],
+["Simit 4","The Sims 4","Simit, suomalainen monikko. Ihan ymmärrettävä.","Ei nimettyä ohjaajaa – Maxis (EA)","2014","Elämäsimulaatio"],
+["Tom Clancyn Sateenkaari 6 Piiritys","Tom Clancy's Rainbow Six Siege","Sana sanalta oikein. Sateenkaari 6 Piiritys.","Xavier Marquis (Ubisoft Montreal)","2015","Taktinen räiskintä"],
+["Kartoittamaton 4: Varkaan loppu","Uncharted 4: A Thief's End","Uncharted = kartoittamaton. Varkaan loppu.","Bruce Straley & Neil Druckmann (Naughty Dog)","2016","Toimintaseikkailu"],
+["Alitehtävä","Undertale","Under + tale = ali + tehtävä? Tale ei ole tehtävä.","Toby Fox (teki pelin yksin)","2015","Roolipeli"],
+["V Nouseva","V Rising","V Nouseva – nouseva kuten aurinko.","Ei nimettyä ohjaajaa – Stunlock Studios","2024 (Early Access vuodesta 2022)","Selviytymis-toimintaroolipeli (vampyyrit)"],
+["Vampyyri selviytyjät","Vampire Survivors","Oikein käännetty, erikseen kirjoitettuna.","Ei nimettyä ohjaajaa – poncle (Luca Galante)","2022 (Early Access vuodesta 2021)","Roguelike-räiskintä (bullet heaven)"],
+["Katso Koirat","Watch Dogs","Watch = katso. Vahtikoirat jäivät vahtimatta.","Jonathan Morin (Ubisoft Montreal)","2014","Toimintaseikkailu"],
+["World of Warcraft: Pandaria Classicin sumut","World of Warcraft: Mists of Pandaria Classic","Mists = sumut. Pandaria Classicin sumut.","Blizzard Entertainment – vuoden 2012 lisäosan ohjasi Tom Chilton","2025 (alkuperäinen 2012)","MMORPG"],
+["Nössöt aallot","Wuthering Waves","Wuthering (ulvova tuuli) luettiin nössöksi. Nössöt aallot.","Solon Lee (Kuro Games)","2024","Toimintaroolipeli (gacha)"],
+["Yakuza: Kuin lohikäärme","Yakuza: Like a Dragon","Oikein käännetty.","Ryosuke Horii (Ryu Ga Gotoku Studio)","2020","JRPG / vuoropohjainen"]
+];
+var GAMES = RAW.map(function (r) { return { fi: r[0], en: r[1], note: r[2], who: r[3], year: r[4], genre: r[5] }; });
+
+// Hyväksytty vastaus: sama nimi kuin Microsoftin listalla. Kirjainkoko, välimerkit, välilyönnit ja tarkkeet (ö → o) eivät vaikuta; kirjainten ja numeroiden pitää täsmätä.
+function strict(s) {
+  return String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, "");
+}
+function isCorrect(guess, game) {
+  var g = strict(guess);
+  return g.length > 0 && g === strict(game.en);
+}
+// Löysempi vertailu vain palautetta varten ("lähellä, tarkista kirjoitusasu").
+var ROMAN = { ii: "2", iii: "3", iv: "4", v: "5", vi: "6", vii: "7", viii: "8", ix: "9" };
+function loose(s) {
+  s = String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+  s = s.replace(/&/g, " and ").replace(/[^a-z0-9]+/g, " ").trim();
+  var toks = s.split(" ").filter(Boolean).map(function (t) { return ROMAN[t] || t; });
+  toks = toks.filter(function (t) { return t !== "the" && t !== "a"; });
+  return toks.join(" ");
+}
+function lev(a, b) {
+  if (a === b) return 0;
+  var m = a.length, n = b.length;
+  if (!m) return n; if (!n) return m;
+  var prev = [], cur = [], i, j;
+  for (j = 0; j <= n; j++) prev[j] = j;
+  for (i = 1; i <= m; i++) {
+    cur[0] = i;
+    for (j = 1; j <= n; j++) {
+      var cost = a.charCodeAt(i - 1) === b.charCodeAt(j - 1) ? 0 : 1;
+      cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + cost);
+    }
+    var t = prev; prev = cur; cur = t;
+  }
+  return prev[n];
+}
+function tolerance(len) { return len <= 4 ? 0 : len <= 9 ? 1 : len <= 16 ? 2 : 3; }
+function isNear(guess, game) {
+  var a = loose(guess), b = loose(game.en);
+  if (!a || !b) return false;
+  if (a === b) return true;
+  if (lev(a, b) <= tolerance(Math.min(a.length, b.length))) return true;
+  var a2 = a.replace(/ /g, ""), b2 = b.replace(/ /g, "");
+  return lev(a2, b2) <= tolerance(Math.min(a2.length, b2.length));
+}
+function shuffle(arr) {
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = a[i]; a[i] = a[j]; a[j] = t;
+  }
+  return a;
+}
+var MAX_ATTEMPTS = 3;
+var WRONG = ["Ei ole.", "Ei sekään.", "Ei vieläkään."];
+var NEAR = "Lähellä! Tarkista kirjoitusasu.";
+function ptsLabel(pts, short) {
+  if (pts <= 0) return "0 " + (short ? "p" : "pistettä");
+  if (short) return "+" + pts + " p";
+  return "+" + pts + (pts === 1 ? " piste" : " pistettä");
+}
+function verdict(ratio) {
+  if (ratio >= 0.9) return "Lokalisoinnin laadunvalvoja. Microsoftin olisi kannattanut palkata sinut ennen sivun julkaisua.";
+  if (ratio >= 0.7) return "Sujuvaa konesuomea. Kääntäjä olisi ylpeä, jos osaisi tuntea jotain.";
+  if (ratio >= 0.45) return "Ihan hyvä – vihjeet tosin tekivät osan töistä.";
+  if (ratio >= 0.2) return "Hukassa käännöksessä, löytyi vihjeillä.";
+  return "Vasen 4 kuollut, todellakin. Uusi kierros?";
+}
+function esc(s) {
+  return String(s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" }[c]; });
+}
+
+var app = document.getElementById("app");
+var state = { screen: "start", len: 10, order: [], qi: 0, score: 0, guess: "", attempts: 0, hints: 0, status: "open", results: [], message: "" };
+
+function current() { return state.order.length ? GAMES[state.order[state.qi]] : GAMES[0]; }
+function setState(patch) { Object.assign(state, patch); render(); }
+
+function startRound() {
+  var n = Math.min(state.len, GAMES.length);
+  var order = shuffle(GAMES.map(function (_, i) { return i; })).slice(0, n);
+  setState({ screen: "play", order: order, qi: 0, score: 0, guess: "", attempts: 0, hints: 0, status: "open", results: [], message: "" });
+  focusInput();
+}
+function resolve(status, pts) {
+  var g = current();
+  setState({ status: status, score: state.score + pts, results: state.results.concat([{ fi: g.fi, en: g.en, pts: pts }]), message: "" });
+  var btn = document.getElementById("next");
+  if (btn) btn.focus();
+}
+function submit() {
+  if (state.status !== "open") return;
+  var input = document.getElementById("guess");
+  var guess = String(input ? input.value : state.guess).trim();
+  if (!guess) return;
+  var game = current();
+  if (isCorrect(guess, game)) { resolve("correct", Math.max(1, 4 - state.hints)); return; }
+  var attempts = state.attempts + 1;
+  if (attempts >= MAX_ATTEMPTS) { state.attempts = attempts; resolve("failed", 0); return; }
+  var near = isNear(guess, game);
+  // Läheltä piti -arvaus jätetään kenttään korjattavaksi, muuten kenttä tyhjennetään.
+  setState({ attempts: attempts, guess: near ? guess : "", message: near ? NEAR : WRONG[(attempts - 1) % WRONG.length] });
+  focusInput(near);
+}
+function revealHint(i) {
+  if (state.status !== "open" || state.hints !== i || state.hints >= 3) return;
+  setState({ hints: state.hints + 1 });
+  focusInput(true);
+}
+function giveUp() { if (state.status === "open") resolve("gaveup", 0); }
+function next() {
+  if (state.qi + 1 >= state.order.length) { setState({ screen: "end" }); return; }
+  setState({ qi: state.qi + 1, guess: "", attempts: 0, hints: 0, status: "open", message: "" });
+  focusInput();
+}
+function focusInput(keepCaretAtEnd) {
+  var el = document.getElementById("guess");
+  if (!el) return;
+  el.focus();
+  if (keepCaretAtEnd && el.value) { var n = el.value.length; try { el.setSelectionRange(n, n); } catch (e) {} }
+}
+
+var LOCK = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>';
+
+function renderStart() {
+  var all = GAMES.length;
+  var lens = [10, 20, all].map(function (n) {
+    return '<button type="button" class="seg' + (state.len === n ? " on" : "") + '" data-act="len" data-n="' + n + '">' + (n === all ? "Kaikki " + n : n + " nimeä") + "</button>";
+  }).join("");
+  return '<section class="screen">' +
+    '<div class="mono">Microsoft Edge Game Assist · fi-FI · ' + all + ' nimeä</div>' +
+    '<h1 class="display">Vasen 4<br>kuollut</h1>' +
+    '<p class="lead">Microsoftin suomenkielinen tukisivu ajoi Edge Game Assistin pelilistan konekääntäjän läpi. Sinä saat sekaisin menneen suomennoksen – kerro, mikä peli oikeasti on kyseessä.</p>' +
+    '<div class="card">' +
+      '<div class="mono accent">Näin se toimii</div>' +
+      '<div class="rule"><b>4</b><div>pistettä jokaisesta nimestä, jonka tiedät ilman vihjeitä.</div></div>' +
+      '<div class="rule"><b>−1</b><div>jokaisesta vihjeestä. Ne avautuvat aina samassa järjestyksessä: ohjaaja, julkaisuvuosi, genre.</div></div>' +
+      '<div class="rule"><b>0</b><div>kolmen väärän arvauksen tai luovuttamisen jälkeen. Vastaus näytetään ja peli jatkuu.</div></div>' +
+      '<div class="fine">' +
+        '<div>Vastaukseksi kelpaa vain pelin oikea englanninkielinen nimi, niin kuin se on Microsoftin listalla. Kirjainkoolla ja välimerkeillä ei ole väliä, mutta lyhenteet kuten <span class="lit">rdr2</span> eivät kelpaa.</div>' +
+        '<div>Esimerkki: <strong>Vasen 4 kuollut 2</strong> → Left 4 Dead 2. Kääntäjä luki sanan "left" suuntana.</div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="row"><span class="mono" style="margin-right:6px">Kierroksen pituus</span>' + lens + '</div>' +
+    '<div><button type="button" class="btn btn-primary btn-big" data-act="start">Aloita</button></div>' +
+    '<p class="foot">Nimet sellaisinaan sivulta <a href="https://support.microsoft.com/fi-fi/edge/enhanced-games-for-microsoft-edge-game-assist" target="_blank" rel="noopener">support.microsoft.com (fi-FI)</a>. Faktat pelien Wikipedia-artikkeleista.</p>' +
+  '</section>';
+}
+
+function renderPlay() {
+  var g = current();
+  var open = state.status === "open";
+  var done = state.qi + (open ? 0 : 1);
+  var pct = state.order.length ? Math.round(done / state.order.length * 100) : 0;
+  var left = MAX_ATTEMPTS - state.attempts;
+  var html = '<section class="play">' +
+    '<div class="topbar mono"><span>Nimi ' + (state.qi + 1) + ' / ' + state.order.length + '</span><span>Pisteet <strong>' + state.score + '</strong></span></div>' +
+    '<div class="bar"><div style="width:' + pct + '%"></div></div>' +
+    '<div class="title-card"><div class="mono accent">Suomeksi</div><div class="display fi">' + esc(g.fi) + '</div></div>';
+
+  if (open) {
+    var defs = [["Ohjaaja", "ohjaaja", g.who], ["Julkaisuvuosi", "julkaisuvuosi", g.year], ["Genre", "genre", g.genre]];
+    var hints = defs.map(function (d, i) {
+      var body;
+      if (state.hints > i) body = '<div class="val">' + esc(d[2]) + '</div>';
+      else if (state.hints === i) body = '<button type="button" class="btn btn-secondary btn-small" data-act="hint" data-i="' + i + '">Näytä ' + d[1] + '</button>';
+      else body = '<div class="lock">' + LOCK + '<span>Avautuu, kun edellinen vihje on käytetty</span></div>';
+      return '<div class="hint"><div class="mono">' + d[0] + '</div>' + body + '</div>';
+    }).join("");
+    html +=
+      '<div class="form">' +
+        '<label for="guess">Mikä on pelin oikea nimi?</label>' +
+        '<div class="inputrow">' +
+          '<input id="guess" class="guess" type="text" value="' + esc(state.guess) + '" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="go" placeholder="Kirjoita englanninkielinen nimi…">' +
+          '<button type="button" class="btn btn-primary" data-act="submit">Arvaa</button>' +
+        '</div>' +
+        '<div class="feedback"><div class="msg" role="status">' + esc(state.message) + '</div><div class="mono">' + (left === 1 ? "1 arvaus jäljellä" : left + " arvausta jäljellä") + '</div></div>' +
+      '</div>' +
+      '<div class="hints">' +
+        '<div class="hints-head"><div class="mono accent">Vihjeet</div><div class="mono">−1 piste / vihje</div></div>' +
+        '<div class="hint-list">' + hints + '</div>' +
+        '<div class="giveup"><button type="button" class="btn-ghost" data-act="giveup">Luovutan, näytä vastaus</button></div>' +
+      '</div>';
+  } else {
+    var last = state.results[state.results.length - 1];
+    var pts = last ? last.pts : 0;
+    var correct = state.status === "correct";
+    var head = correct ? (pts === 4 ? "Oikein, ilman vihjeitä!" : "Oikein!") : state.status === "failed" ? "Arvaukset loppuivat. Oikea vastaus:" : "Oikea vastaus:";
+    var isLast = state.qi + 1 >= state.order.length;
+    html +=
+      '<div class="result" style="--c:' + (correct ? "var(--green)" : "var(--red)") + '">' +
+        '<div class="result-head"><div>' + head + '</div><div class="mono">' + ptsLabel(pts, false) + '</div></div>' +
+        '<div class="display en">' + esc(g.en) + '</div>' +
+        '<div class="note"><span>Käännöksestä:</span> ' + esc(g.note) + '</div>' +
+        '<div class="facts">' +
+          '<div class="fact"><div class="mono">Ohjaaja</div><div>' + esc(g.who) + '</div></div>' +
+          '<div class="fact year"><div class="mono">Julkaistu</div><div>' + esc(g.year) + '</div></div>' +
+          '<div class="fact"><div class="mono">Genre</div><div>' + esc(g.genre) + '</div></div>' +
+        '</div>' +
+        '<div><button type="button" id="next" class="btn btn-primary" data-act="next">' + (isLast ? "Näytä tulokset" : "Seuraava nimi") + '</button></div>' +
+      '</div>';
+  }
+  return html + '</section>';
+}
+
+function renderEnd() {
+  var max = state.order.length * 4;
+  var rows = state.results.map(function (r) {
+    return '<div class="res"><div class="names"><div>' + esc(r.fi) + '</div><div>' + esc(r.en) + '</div></div><div class="mono ' + (r.pts > 0 ? "ok" : "bad") + '">' + ptsLabel(r.pts, true) + '</div></div>';
+  }).join("");
+  return '<section class="screen">' +
+    '<div class="mono">Kierros pelattu · ' + state.order.length + ' nimeä</div>' +
+    '<div><div class="display score"><span>' + state.score + '</span><small> / ' + max + '</small></div>' +
+    '<p class="verdict">' + verdict(max ? state.score / max : 0) + '</p></div>' +
+    '<div class="results">' + rows + '</div>' +
+    '<div class="row"><button type="button" class="btn btn-primary" data-act="start">Pelaa uudestaan</button><button type="button" class="btn btn-secondary" data-act="restart">Vaihda kierroksen pituutta</button></div>' +
+  '</section>';
+}
+
+function render() {
+  app.innerHTML = state.screen === "start" ? renderStart() : state.screen === "play" ? renderPlay() : renderEnd();
+}
+
+app.addEventListener("click", function (e) {
+  var t = e.target.closest("[data-act]");
+  if (!t) return;
+  var act = t.getAttribute("data-act");
+  if (act === "len") setState({ len: Number(t.getAttribute("data-n")) });
+  else if (act === "start") startRound();
+  else if (act === "restart") setState({ screen: "start" });
+  else if (act === "submit") submit();
+  else if (act === "hint") revealHint(Number(t.getAttribute("data-i")));
+  else if (act === "giveup") giveUp();
+  else if (act === "next") next();
+});
+app.addEventListener("keydown", function (e) {
+  if (e.key === "Enter" && e.target && e.target.id === "guess") { e.preventDefault(); submit(); }
+});
+app.addEventListener("input", function (e) {
+  if (e.target && e.target.id === "guess") state.guess = e.target.value;
+});
+
+render();
+</script>
+</body>
+</html>
