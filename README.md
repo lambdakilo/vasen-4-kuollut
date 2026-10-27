@@ -5,7 +5,7 @@ Assist, where every game title was run through a machine translator. You
 get the mangled Finnish title ("Vasen 4 kuollut 2", "Kuppipää", "Nössöt
 aallot") and have to name the real game.
 
-Play it at <https://lambdakilo.github.io/vasen-4-kuollut/>.
+Play it at <https://zululima.github.io/vasen-4-kuollut/>.
 
 ## How a round works
 
